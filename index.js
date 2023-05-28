@@ -51,15 +51,6 @@ app.get('/images', (req, res) => {
     res.sendFile(filePath);
 });
 
-// CSRF token generation middleware
-// app.use((req, res, next) => {
-//     if (!req.session.csrfToken) {
-//         req.session.csrfToken = Math.random().toString(36).substr(2);
-//     }
-//     next();
-// });
-// To include in the HTML form later -> <input type="hidden" name="csrf_token" value="${req.session.csrfToken}">
-
 // Shop homepage with login form
 app.get('/', (req, res) => {
     const name = req.query.name || '';
@@ -117,10 +108,7 @@ app.get('/products', (req, res) => {
 app.post('/place-order', (req, res) => {
     const user = req.session.user;
     const product_id = req.body.product_id;
-    // const csrf_token = req.body.csrf_token;
 
-    // Verify CSRF token
-    // if (csrf_token === req.session.csrfToken) {
     if (user) {
         const product = products.find((product) => product.id === parseInt(product_id));
         if (product) {
@@ -134,9 +122,6 @@ app.post('/place-order', (req, res) => {
     } else {
         res.redirect('/');
     }
-    // } else {
-    //     res.status(403).send('Invalid CSRF token');
-    // }
 });
 
 // Start the server
